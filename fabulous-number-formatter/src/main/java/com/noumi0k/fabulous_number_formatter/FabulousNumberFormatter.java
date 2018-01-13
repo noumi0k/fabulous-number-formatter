@@ -10,7 +10,7 @@ import java.util.Locale;
  * Created by noumi0k on 2017/12/09.
  */
 
-public class Formatter {
+public class FabulousNumberFormatter {
 
     public static String getRawDecimal(Double number) {
         return getRawDecimal(String.valueOf(number));
