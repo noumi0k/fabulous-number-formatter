@@ -12,9 +12,7 @@ import java.util.Locale;
 
 public class FabulousNumberFormatter {
 
-    public static String getRawDecimal(Double number) {
-        return getRawDecimal(String.valueOf(number));
-    }
+    private final static int maxDecimal = 8;
 
     public static String getRawDecimal(String numberString) {
         try {
@@ -26,37 +24,33 @@ public class FabulousNumberFormatter {
     }
 
     public static String keepSignificantForDecimalInput(int cursorPosition, String numberString) {
-        return keepSignificantForDecimalInput(cursorPosition, numberString, 0);
-    }
-
-    public static String keepSignificantForDecimalInput(int cursorPosition, String numberString, int maxDecimal) {
         int minDecimal = 0;
         int dotsNumber = getDotsNumber(numberString);
         int lastCharPosition = Math.max(0, numberString.length() - 1);
 
-        // 複数の「.」を打たせない
+        // Make it impossible to press several "."
         if (dotsNumber > 1) {
             return new StringBuilder(numberString).deleteCharAt(cursorPosition - 1).toString();
         }
 
         String numberStringRaw = getRawDecimal(numberString);
 
-        // 数字でなければ、emptyを返す
+        // Return an empty string if it's not a number
         if (numberStringRaw == null || numberStringRaw.isEmpty()) {
             return "";
         }
 
-        // 「0」 で始まる場合、0が消えない & 文字が多くなりすぎないように返す
+        // Don't remove the "0" if it's added at the beginning
         if (numberString.indexOf('0') == 0 && dotsNumber == 0) {
-            return getNumberWithoutComma(numberString, maxDecimal);
+            return getNumberWithoutComma(numberString);
         }
 
-        // 「.」で始まる場合、点が消えない & 文字が多くなりすぎないように返す
+        // Don't remove the "." if it's added at the beginning
         if (numberString.indexOf('.') == 0) {
-            return getNumberWithoutComma(numberString, maxDecimal);
+            return getNumberWithoutComma(numberString);
         }
 
-        // 「.」で終わる場合、打ったばかりであれば何もしないで返す
+        // If a "." has just been pressed at the end of the string, do nothing
         if (numberString.charAt(lastCharPosition) == '.' && cursorPosition == lastCharPosition + 1) {
             return numberString;
         }
@@ -67,7 +61,7 @@ public class FabulousNumberFormatter {
             return numberStringRaw;
         }
 
-        // ユーザが「.」の後に入れた桁数の数が変更されないように
+        // Digits (even 0) after a "." should not be removed
         if (numberString.contains(".")) {
             minDecimal = numberString.length() - (numberString.indexOf(".") + 1);
         }
@@ -75,7 +69,7 @@ public class FabulousNumberFormatter {
         return getDecimalFormat(minDecimal, maxDecimal).format(bigDecimal);
     }
 
-    private static String getNumberWithoutComma(String numberString, int maxDecimal) {
+    private static String getNumberWithoutComma(String numberString) {
         if (numberString.length() > maxDecimal - 1) {
             return numberString.replace(",", "").substring(0, maxDecimal);
         } else {
