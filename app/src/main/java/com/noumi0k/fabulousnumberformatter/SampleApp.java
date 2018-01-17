@@ -36,7 +36,7 @@ public class SampleApp extends AppCompatActivity implements TextWatcher {
 
     @Override
     public void afterTextChanged(Editable editable) {
-        updateCommaSeparators(editable.toString());
+        FabulousNumberFormatter.updateCommaSeparators(editable.toString(), numberEditText, this);
     }
 
     @Override
@@ -65,16 +65,5 @@ public class SampleApp extends AppCompatActivity implements TextWatcher {
         if (numberEditText != null) {
             numberEditText.removeTextChangedListener(this);
         }
-    }
-
-    void updateCommaSeparators(String amountString) {
-        int beforeCursor = numberEditText.getSelectionStart();
-        int beforeSize = numberEditText.getText().length();
-        numberEditText.removeTextChangedListener(this);
-        numberEditText.setText(FabulousNumberFormatter.keepSignificantForDecimalInput(beforeCursor, amountString));
-        numberEditText.addTextChangedListener(this);
-        int afterSize = numberEditText.getText().length();
-        int sizeDifference = afterSize - beforeSize;
-        numberEditText.setSelection(Math.max(0, beforeCursor + sizeDifference));
     }
 }

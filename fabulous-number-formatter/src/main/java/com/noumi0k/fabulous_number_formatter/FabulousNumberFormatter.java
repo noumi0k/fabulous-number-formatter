@@ -1,5 +1,8 @@
 package com.noumi0k.fabulous_number_formatter;
 
+import android.text.TextWatcher;
+import android.widget.EditText;
+
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -12,7 +15,7 @@ import java.util.Locale;
 
 public class FabulousNumberFormatter {
 
-    private final static int maxDecimal = 8;
+    private final static int MAX_DECIMAL = 8;
 
     public static String getRawDecimal(String numberString) {
         try {
@@ -25,11 +28,11 @@ public class FabulousNumberFormatter {
 
     public static String keepSignificantForDecimalInput(int cursorPosition, String numberString) {
         int minDecimal = 0;
-        int dotsNumber = getDotsNumber(numberString);
+        int dotsCount = getDotsCount(numberString);
         int lastCharPosition = Math.max(0, numberString.length() - 1);
 
         // Make it impossible to press several "."
-        if (dotsNumber > 1) {
+        if (dotsCount > 1) {
             return new StringBuilder(numberString).deleteCharAt(cursorPosition - 1).toString();
         }
 
@@ -41,7 +44,7 @@ public class FabulousNumberFormatter {
         }
 
         // Don't remove the "0" if it's added at the beginning
-        if (numberString.indexOf('0') == 0 && dotsNumber == 0) {
+        if (numberString.indexOf('0') == 0 && dotsCount == 0) {
             return getNumberWithoutComma(numberString);
         }
 
@@ -66,18 +69,18 @@ public class FabulousNumberFormatter {
             minDecimal = numberString.length() - (numberString.indexOf(".") + 1);
         }
 
-        return getDecimalFormat(minDecimal, maxDecimal).format(bigDecimal);
+        return getDecimalFormat(minDecimal, MAX_DECIMAL).format(bigDecimal);
     }
 
     private static String getNumberWithoutComma(String numberString) {
-        if (numberString.length() > maxDecimal - 1) {
-            return numberString.replace(",", "").substring(0, maxDecimal);
+        if (numberString.length() > MAX_DECIMAL - 1) {
+            return numberString.replace(",", "").substring(0, MAX_DECIMAL);
         } else {
             return numberString.replace(",", "");
         }
     }
 
-    private static int getDotsNumber(String amountString) {
+    private static int getDotsCount(String amountString) {
         return amountString.length() - amountString.replace(".", "").length();
     }
 
@@ -94,5 +97,17 @@ public class FabulousNumberFormatter {
 
     private static DecimalFormat getDecimalFormat(int fractionDigits) {
         return getDecimalFormat(fractionDigits, fractionDigits);
+    }
+
+    public static EditText updateCommaSeparators(String amountString, EditText numberEditText, TextWatcher textWatcher) {
+        int beforeCursor = numberEditText.getSelectionStart();
+        int beforeSize = numberEditText.getText().length();
+        numberEditText.removeTextChangedListener(textWatcher);
+        numberEditText.setText(FabulousNumberFormatter.keepSignificantForDecimalInput(beforeCursor, amountString));
+        numberEditText.addTextChangedListener(textWatcher);
+        int afterSize = numberEditText.getText().length();
+        int sizeDifference = afterSize - beforeSize;
+        numberEditText.setSelection(Math.max(0, beforeCursor + sizeDifference));
+        return numberEditText;
     }
 }
