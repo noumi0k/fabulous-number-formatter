@@ -26,16 +26,17 @@ public class SampleApp extends AppCompatActivity implements TextWatcher {
 
     @Override
     public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        //No Action
     }
 
     @Override
     public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
+        //No Action
     }
 
     @Override
     public void afterTextChanged(Editable editable) {
-        updateAmountJpyEditTextWithCommaSeparators(editable.toString());
+        updateCommaSeparators(editable.toString());
     }
 
     @Override
@@ -66,7 +67,7 @@ public class SampleApp extends AppCompatActivity implements TextWatcher {
         }
     }
 
-    void updateAmountJpyEditTextWithCommaSeparators(String amountString) {
+    void updateCommaSeparators(String amountString) {
         int beforeCursor = numberEditText.getSelectionStart();
         int beforeSize = numberEditText.getText().length();
         numberEditText.removeTextChangedListener(this);
