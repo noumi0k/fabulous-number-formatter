@@ -36,7 +36,7 @@ public class SampleApp implements TextWatcher {
 
     @Override
     public void afterTextChanged(Editable editable) {
-        updateAmountJpyEditTextWithCommaSeparators(editable.toString());
+        FabulousNumberFormatter.updateCommaSeparators(editable.toString(), editText, this);
     }
     
     @Override
@@ -53,17 +53,6 @@ public class SampleApp implements TextWatcher {
          if (editText != null) {
              editText.removeTextChangedListener(this);
          }
-     }
- 
-     void updateAmountJpyEditTextWithCommaSeparators(String amountString) {
-         int beforeCursor = editText.getSelectionStart();
-         int beforeSize = editText.getText().length();
-         editText.removeTextChangedListener(this);
-         editText.setText(FabulousNumberFormatter.keepSignificantForDecimalInput(beforeCursor, amountString));
-         editText.addTextChangedListener(this);
-         int afterSize = editText.getText().length();
-         int sizeDifference = afterSize - beforeSize;
-         editText.setSelection(Math.max(0, beforeCursor + sizeDifference));
      }
      
      ~~~~~~~
