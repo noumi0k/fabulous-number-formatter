@@ -99,7 +99,7 @@ public class FabulousNumberFormatter {
         return getDecimalFormat(fractionDigits, fractionDigits);
     }
 
-    public static EditText updateCommaSeparators(String amountString, EditText numberEditText, TextWatcher textWatcher) {
+    public static void updateCommaSeparators(String amountString, EditText numberEditText, TextWatcher textWatcher) {
         int beforeCursor = numberEditText.getSelectionStart();
         int beforeSize = numberEditText.getText().length();
         numberEditText.removeTextChangedListener(textWatcher);
@@ -108,6 +108,6 @@ public class FabulousNumberFormatter {
         int afterSize = numberEditText.getText().length();
         int sizeDifference = afterSize - beforeSize;
         numberEditText.setSelection(Math.max(0, beforeCursor + sizeDifference));
-        return numberEditText;
+        return;
     }
 }
