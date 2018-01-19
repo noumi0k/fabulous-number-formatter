@@ -3,8 +3,10 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/fabulous-number-formatter.iml" filepath="$PROJECT_DIR$/fabulous-number-formatter.iml" />
       <module fileurl="file://$PROJECT_DIR$/fabulous-number-formatter/fabulous-number-formatter.iml" filepath="$PROJECT_DIR$/fabulous-number-formatter/fabulous-number-formatter.iml" />
       <module fileurl="file://$PROJECT_DIR$/fabulous-number-formatter .iml" filepath="$PROJECT_DIR$/fabulous-number-formatter .iml" />
+      <module fileurl="file://$PROJECT_DIR$/fabulous-number-formatter/fabulous-number-formatter-fabulous-number-formatter.iml" filepath="$PROJECT_DIR$/fabulous-number-formatter/fabulous-number-formatter-fabulous-number-formatter.iml" />
     </modules>
   </component>
 </project>
