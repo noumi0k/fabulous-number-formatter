@@ -19,25 +19,10 @@ import butterknife.ButterKnife;
  * Created by noumi0k on 2017/12/23.
  */
 
-public class SampleApp extends AppCompatActivity implements TextWatcher {
+public class SampleActivity extends AppCompatActivity implements TextWatcher {
 
     @BindView(R.id.number_edittext)
     EditText numberEditText;
-
-    @Override
-    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-        //No Action
-    }
-
-    @Override
-    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-        //No Action
-    }
-
-    @Override
-    public void afterTextChanged(Editable editable) {
-        FabulousNumberFormatter.updateCommaSeparators(editable.toString(), numberEditText, this);
-    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -54,16 +39,27 @@ public class SampleApp extends AppCompatActivity implements TextWatcher {
     @Override
     protected void onResume() {
         super.onResume();
-        if (numberEditText != null) {
-            numberEditText.addTextChangedListener(this);
-        }
+        numberEditText.addTextChangedListener(this);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        if (numberEditText != null) {
-            numberEditText.removeTextChangedListener(this);
-        }
+        numberEditText.removeTextChangedListener(this);
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        //No Action
+    }
+
+    @Override
+    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        //No Action
+    }
+
+    @Override
+    public void afterTextChanged(Editable editable) {
+        FabulousNumberFormatter.updateCommaSeparators(editable.toString(), numberEditText, this);
     }
 }

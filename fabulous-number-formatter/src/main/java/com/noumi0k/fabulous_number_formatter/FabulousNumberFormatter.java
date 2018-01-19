@@ -108,6 +108,5 @@ public class FabulousNumberFormatter {
         int afterSize = numberEditText.getText().length();
         int sizeDifference = afterSize - beforeSize;
         numberEditText.setSelection(Math.max(0, beforeCursor + sizeDifference));
-        return;
     }
 }
