@@ -60,6 +60,6 @@ public class SampleActivity extends AppCompatActivity implements TextWatcher {
 
     @Override
     public void afterTextChanged(Editable editable) {
-        FabulousNumberFormatter.updateCommaSeparators(editable.toString(), numberEditText, this);
+        FabulousNumberFormatter.updateCommaSeparators(editable.toString(), 8, numberEditText, this);
     }
 }

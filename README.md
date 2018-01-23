@@ -24,6 +24,7 @@ public class SampleApp implements TextWatcher {
      ~~~~~~~
       
     EditText editText;
+    int maxDecimal = 8;
     
     @Override
     public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -36,7 +37,7 @@ public class SampleApp implements TextWatcher {
 
     @Override
     public void afterTextChanged(Editable editable) {
-        FabulousNumberFormatter.updateCommaSeparators(editable.toString(), editText, this);
+        FabulousNumberFormatter.updateCommaSeparators(editable.toString(), maxDecimal, editText, this);
     }
     
     @Override

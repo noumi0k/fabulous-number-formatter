@@ -15,8 +15,6 @@ import java.util.Locale;
 
 public class FabulousNumberFormatter {
 
-    private final static int MAX_DECIMAL = 8;
-
     public static String getRawDecimal(String numberString) {
         try {
             String stringWithoutComma = numberString.replaceAll(",", "");
@@ -26,7 +24,7 @@ public class FabulousNumberFormatter {
         }
     }
 
-    public static String keepSignificantForDecimalInput(int cursorPosition, String numberString) {
+    public static String keepSignificantForDecimalInput(int cursorPosition, String numberString, int maxDecimal) {
         int minDecimal = 0;
         int dotsCount = getDotsCount(numberString);
         int lastCharPosition = Math.max(0, numberString.length() - 1);
@@ -45,12 +43,12 @@ public class FabulousNumberFormatter {
 
         // Don't remove the "0" if it's added at the beginning
         if (numberString.indexOf('0') == 0 && dotsCount == 0) {
-            return getNumberWithoutComma(numberString);
+            return getNumberWithoutComma(numberString, maxDecimal);
         }
 
         // Don't remove the "." if it's added at the beginning
         if (numberString.indexOf('.') == 0) {
-            return getNumberWithoutComma(numberString);
+            return getNumberWithoutComma(numberString, maxDecimal);
         }
 
         // If a "." has just been pressed at the end of the string, do nothing
@@ -69,12 +67,12 @@ public class FabulousNumberFormatter {
             minDecimal = numberString.length() - (numberString.indexOf(".") + 1);
         }
 
-        return getDecimalFormat(minDecimal, MAX_DECIMAL).format(bigDecimal);
+        return getDecimalFormat(minDecimal, maxDecimal).format(bigDecimal);
     }
 
-    private static String getNumberWithoutComma(String numberString) {
-        if (numberString.length() > MAX_DECIMAL - 1) {
-            return numberString.replace(",", "").substring(0, MAX_DECIMAL);
+    private static String getNumberWithoutComma(String numberString, int maxDecimal) {
+        if (numberString.length() > maxDecimal - 1) {
+            return numberString.replace(",", "").substring(0, maxDecimal);
         } else {
             return numberString.replace(",", "");
         }
@@ -99,11 +97,11 @@ public class FabulousNumberFormatter {
         return getDecimalFormat(fractionDigits, fractionDigits);
     }
 
-    public static void updateCommaSeparators(String amountString, EditText numberEditText, TextWatcher textWatcher) {
+    public static void updateCommaSeparators(String amountString, int maxDecimal, EditText numberEditText, TextWatcher textWatcher) {
         int beforeCursor = numberEditText.getSelectionStart();
         int beforeSize = numberEditText.getText().length();
         numberEditText.removeTextChangedListener(textWatcher);
-        numberEditText.setText(FabulousNumberFormatter.keepSignificantForDecimalInput(beforeCursor, amountString));
+        numberEditText.setText(keepSignificantForDecimalInput(beforeCursor, amountString, maxDecimal));
         numberEditText.addTextChangedListener(textWatcher);
         int afterSize = numberEditText.getText().length();
         int sizeDifference = afterSize - beforeSize;
